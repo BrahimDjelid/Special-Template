@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design</title>
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/master.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Settings Box -->
+    <div class="settings-box">
+        <div class="toggle-button">
+            <i class="fa fa-gear settings-button"></i>
+        </div>
+
+        <div class="settings-container">
+            <div class="options-box">
+                <!-- color system -->
+                <h4>Theme Color</h4>
+                <ul class="colors-list">
+                    <li class="active" data-color="#7c7cff"></li> <!-- Neon Purple -->
+                    <li data-color="#38e8d0"></li> <!-- Neon Cyan -->
+                    <li data-color="#5fa8ff"></li> <!-- Neon Blue -->
+                    <li data-color="#ff7ad9"></li> <!-- Neon Pink -->
+                </ul>
+            </div>
+            <!-- random backgrounds -->
+            <div class="options-box">
+                <h4>Random Backgrounds</h4>
+                <div>
+                    <span class="random-bg-button yes active" data-background="yes">Yes</span>
+                    <span class="random-bg-button no" data-background="no">No</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="feedback">
+        <span class="feedback-icon"><i class="fa-regular fa-circle-check"></i></span>
+        <span class="feedback-text">Random Background Active!</span>
+    </div>
+    <!-- Landing Page -->
+    <section class="landing-page">
+        <div class="container">
+            <div class="overlay"></div>
+
+            <div class="header-area">
+                <div class="logo">Design</div>
+                <ul class="links">
+                    <li><a class="active" href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="hero">
+                <h1>We Are <span>Creative</span> Agency</h1>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat,
+                    at iure? Esse reprehenderit ratione ullam ab.
+                </p>
+                <a href="#" class="cta-btn">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="js/master.js"></script>
+</body>
+
+</html>
