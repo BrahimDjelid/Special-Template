@@ -139,6 +139,7 @@ body.content-mode .button.no {
 
 .settings-container .options-box {
   padding: 5px 20px;
+  margin: 18px 0;
 }
 
 .settings-container .options-box h4 {
@@ -146,11 +147,7 @@ body.content-mode .button.no {
   font-weight: 500;
   color: var(--text-main);
   text-shadow: var(--glow-primary);
-  margin: 20px 0px 12px;
-}
-
-.settings-container .options-box:not(:first-child) h4 {
-  margin: 14px 0px 12px;
+  margin: 0px 0px 10px;
 }
 
 .colors-list {
@@ -168,7 +165,8 @@ body.content-mode .button.no {
   height: 20px;
   margin: 0 6px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid transparent;
+  box-shadow: var(--glow-primary);
   cursor: pointer;
   opacity: 0.5;
   transition: 0.2s all;
@@ -177,7 +175,7 @@ body.content-mode .button.no {
 .colors-list li.active,
 .colors-list li:hover {
   opacity: 1;
-  box-shadow: var(--glow-primary);
+  box-shadow: var(--glow-primary-strong);
   border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
@@ -222,7 +220,7 @@ body.content-mode .button.no {
   }
 
   .settings-container .options-box h4 {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .colors-list {
@@ -277,6 +275,7 @@ body.content-mode .button.no {
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   color: var(--text-main);
 }
@@ -1023,6 +1022,12 @@ body.content-mode .bullet .tooltip::before {
   font-style: italic;
 }
 
+@media (max-width: 767px) {
+  .testimonials .ts-box > p {
+    font-size: 16px;
+  }
+}
+
 .testimonials .ts-box .person-info {
   overflow: hidden;
 }
@@ -1056,6 +1061,15 @@ body.content-mode .bullet .tooltip::before {
   margin: 0;
 }
 
+@media (max-width: 767px) {
+  .testimonials .ts-box .person-info h4 {
+    font-size: 18px;
+  }
+
+  .testimonials .ts-box .person-info p {
+    font-size: 14px;
+  }
+}
 /* Contact Us */
 .contact {
   min-height: 600px;

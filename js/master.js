@@ -1,17 +1,14 @@
-/* GLASS MODE TOGGLE (LANDING vs SECTIONS) */
-const landingSection = document.querySelector(".landing-page");
-
 // Settings box
 const settingsIcon = document.querySelector(".toggle-button .settings-button");
 const toggleButton = document.querySelector(".toggle-button");
 const settingsBox = document.querySelector(".settings-box");
 
 // Colors
-const colorLi = document.querySelectorAll(".colors-list li");
+const colorsLi = document.querySelectorAll(".colors-list li");
 
 // Background
 const landingPage = document.querySelector(".landing-page");
-const randomBgButton = document.querySelectorAll(
+const randomBgButtons = document.querySelectorAll(
   ".options-box .random-bg-button",
 );
 
@@ -47,7 +44,7 @@ let ourGallery = document.querySelectorAll(".gallery img");
 
 // Handle mode
 function handleGlassMode() {
-  const landingBottom = landingSection.offsetTop + landingSection.offsetHeight;
+  const landingBottom = landingPage.offsetTop + landingPage.offsetHeight;
   const scrollY = window.pageYOffset;
 
   // While landing page is visible
@@ -114,11 +111,6 @@ function updateThemeColor(color) {
 // Handle color change when clicking a color
 function handleColorChange(event) {
   handleActive(event);
-  // Remove active from all colors
-  // colorLi.forEach((el) => el.classList.remove("active"));
-
-  // Add active to clicked color
-  // event.target.classList.add("active");
 
   // Get color value
   const color = event.target.dataset.color;
@@ -131,7 +123,7 @@ function handleColorChange(event) {
 }
 
 // Add click event to each color
-colorLi.forEach((li) => {
+colorsLi.forEach((li) => {
   li.addEventListener("click", handleColorChange);
 });
 
@@ -186,13 +178,6 @@ function showFeedback(message, iconClass, type) {
 // Handle Yes/No button clicks
 function handleBackgroundToggle(event) {
   handleActive(event);
-  // Remove active from all buttons
-  // randomBgButton.forEach((button) => {
-  //   button.classList.remove("active");
-  // });
-
-  // Add active to clicked button
-  // event.target.classList.add("active");
 
   // Check if Yes or No was clicked
   if (event.target.dataset.background === "yes") {
@@ -218,7 +203,7 @@ function handleBackgroundToggle(event) {
 }
 
 // Add click event to Yes/No buttons
-randomBgButton.forEach((button) => {
+randomBgButtons.forEach((button) => {
   button.addEventListener("click", handleBackgroundToggle);
 });
 
@@ -229,9 +214,15 @@ bulletsButtons.forEach((button) => {
     if (event.target.dataset.display === "show") {
       bulletsContainer.style.display = "block";
       localStorage.setItem("bullets", "show");
+      showFeedback(
+        "Bullets Option Active!",
+        "fa-regular fa-circle-check",
+        "success",
+      );
     } else {
       bulletsContainer.style.display = "none";
       localStorage.setItem("bullets", "hide");
+      showFeedback("Bullets Are Hidden!", "fa-regular fa-circle-xmark", "info");
     }
     handleActive(event);
     toggleSettings();
@@ -251,7 +242,7 @@ function loadSavedColor() {
     document.documentElement.style.setProperty("--primary-rgb", savedRgb);
 
     // Mark the saved color as active
-    colorLi.forEach((li) => {
+    colorsLi.forEach((li) => {
       li.classList.remove("active");
 
       if (li.dataset.color === savedColor) {
@@ -284,7 +275,7 @@ function loadSavedBackgroundOption() {
 
   if (randomBgValue !== null) {
     // Remove active from all buttons
-    randomBgButton.forEach((button) => {
+    randomBgButtons.forEach((button) => {
       button.classList.remove("active");
     });
 
