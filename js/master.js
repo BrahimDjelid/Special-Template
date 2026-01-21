@@ -1,3 +1,6 @@
+/* GLASS MODE TOGGLE (LANDING vs SECTIONS) */
+const landingSection = document.querySelector(".landing-page");
+
 // Settings box
 const settingsIcon = document.querySelector(".toggle-button .settings-button");
 const toggleButton = document.querySelector(".toggle-button");
@@ -9,8 +12,12 @@ const colorLi = document.querySelectorAll(".colors-list li");
 // Background
 const landingPage = document.querySelector(".landing-page");
 const randomBgButton = document.querySelectorAll(
-  ".options-box .random-bg-button"
+  ".options-box .random-bg-button",
 );
+
+// Bullets Buttons
+let bulletsButtons = document.querySelectorAll(".bullets-button");
+let bulletsContainer = document.querySelector(".nav-bullets");
 
 // variables
 let randomBackgroundOption = true;
@@ -32,6 +39,39 @@ const imgs = [
   "10.jpg",
 ];
 
+// Skills
+let ourSkills = document.querySelector(".skills");
+
+// Gallery Images
+let ourGallery = document.querySelectorAll(".gallery img");
+
+// Handle mode
+function handleGlassMode() {
+  const landingBottom = landingSection.offsetTop + landingSection.offsetHeight;
+  const scrollY = window.pageYOffset;
+
+  // While landing page is visible
+  if (scrollY < landingBottom - 155) {
+    document.body.classList.add("landing-mode");
+    document.body.classList.remove("content-mode");
+  } else {
+    document.body.classList.add("content-mode");
+    document.body.classList.remove("landing-mode");
+  }
+}
+
+// Run on load and on scroll
+window.addEventListener("scroll", handleGlassMode);
+window.addEventListener("load", handleGlassMode);
+
+// Handle Active State
+function handleActive(event) {
+  event.target.parentElement.querySelectorAll(".active").forEach((element) => {
+    element.classList.remove("active");
+  });
+  event.target.classList.add("active");
+}
+
 /*  Settings box  */
 
 // Toggle settings box open/close
@@ -42,6 +82,12 @@ function toggleSettings() {
 
 toggleButton.addEventListener("click", toggleSettings);
 
+document.addEventListener("click", (e) => {
+  if (!toggleButton.contains(e.target) && !settingsBox.contains(e.target)) {
+    settingsBox.classList.remove("active");
+    settingsIcon.classList.remove("fa-spin");
+  }
+});
 /*  Color switcher  */
 
 // Convert hex color to rgb format
@@ -67,11 +113,12 @@ function updateThemeColor(color) {
 
 // Handle color change when clicking a color
 function handleColorChange(event) {
+  handleActive(event);
   // Remove active from all colors
-  colorLi.forEach((el) => el.classList.remove("active"));
+  // colorLi.forEach((el) => el.classList.remove("active"));
 
   // Add active to clicked color
-  event.target.classList.add("active");
+  // event.target.classList.add("active");
 
   // Get color value
   const color = event.target.dataset.color;
@@ -138,13 +185,14 @@ function showFeedback(message, iconClass, type) {
 
 // Handle Yes/No button clicks
 function handleBackgroundToggle(event) {
+  handleActive(event);
   // Remove active from all buttons
-  randomBgButton.forEach((button) => {
-    button.classList.remove("active");
-  });
+  // randomBgButton.forEach((button) => {
+  //   button.classList.remove("active");
+  // });
 
   // Add active to clicked button
-  event.target.classList.add("active");
+  // event.target.classList.add("active");
 
   // Check if Yes or No was clicked
   if (event.target.dataset.background === "yes") {
@@ -154,7 +202,7 @@ function handleBackgroundToggle(event) {
     showFeedback(
       "Random Background Active!",
       "fa-regular fa-circle-check",
-      "success"
+      "success",
     );
   } else {
     randomBackgroundOption = false;
@@ -172,6 +220,22 @@ function handleBackgroundToggle(event) {
 // Add click event to Yes/No buttons
 randomBgButton.forEach((button) => {
   button.addEventListener("click", handleBackgroundToggle);
+});
+
+/* Handle Bullets Option*/
+
+bulletsButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    if (event.target.dataset.display === "show") {
+      bulletsContainer.style.display = "block";
+      localStorage.setItem("bullets", "show");
+    } else {
+      bulletsContainer.style.display = "none";
+      localStorage.setItem("bullets", "hide");
+    }
+    handleActive(event);
+    toggleSettings();
+  });
 });
 
 /*  LOAD SAVED COLOR  */
@@ -206,6 +270,9 @@ function loadSavedBackgroundImage() {
   if (savedIndex !== null) {
     currentImageIndex = parseInt(savedIndex);
     landingPage.style.backgroundImage = `url("imgs/${imgs[currentImageIndex]}")`;
+  } else {
+    currentImageIndex = 0;
+    landingPage.style.backgroundImage = `url("imgs/1.jpg")`;
   }
 }
 
@@ -232,11 +299,158 @@ function loadSavedBackgroundOption() {
   }
 }
 
+// Load Bullets State
+function loadBulletsState() {
+  const state = localStorage.getItem("bullets");
+
+  if (state) {
+    if (state === "show") {
+      bulletsContainer.style.display = "block";
+    } else {
+      bulletsContainer.style.display = "none";
+    }
+
+    bulletsButtons.forEach((button) => {
+      button.classList.remove("active");
+
+      if (button.dataset.display === state) {
+        button.classList.add("active");
+      }
+    });
+  }
+}
+
 loadSavedColor();
 loadSavedBackgroundImage();
 loadSavedBackgroundOption();
+loadBulletsState();
 
 /*  Start background slider  */
 if (randomBackgroundOption === true) {
   randomBackgrounds();
 }
+
+// Reset Button
+const localStorageItems = [
+  "primary",
+  "primary-rgb",
+  "randomBgOption",
+  "backgroundImageIndex",
+  "bullets",
+];
+
+document.querySelector(".reset-button").onclick = function () {
+  localStorageItems.forEach((item) => {
+    localStorage.removeItem(item);
+  });
+
+  window.location.reload();
+};
+
+// Select Skills Selector
+window.onscroll = function () {
+  // Skills Offset Top
+  let skillsOffsetTop = ourSkills.offsetTop;
+
+  // Skills Outer Height
+  let skillsOuterHeight = ourSkills.offsetHeight;
+
+  // Window height
+  let windowHeight = this.innerHeight;
+
+  // Window ScrollTop
+  let windowScrollTop = this.pageYOffset;
+
+  if (windowScrollTop > skillsOffsetTop + skillsOuterHeight - windowHeight) {
+    let allSkills = this.document.querySelectorAll(
+      ".skill-box .skill-progress span",
+    );
+
+    allSkills.forEach((skill) => {
+      skill.style.width = skill.dataset.progress;
+    });
+  }
+};
+
+// Create pop up with the image
+
+ourGallery.forEach((img) => {
+  img.addEventListener("click", () => {
+    // Create overlay element
+    let overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+    document.body.appendChild(overlay);
+
+    // Create the popup
+    let popupBox = document.createElement("div");
+    popupBox.className = "popup-box";
+
+    if (img.alt !== null && img.alt !== "") {
+      let imageHeading = document.createElement("h3");
+      // Get The alt text
+      let headingText = document.createTextNode(img.alt);
+
+      imageHeading.appendChild(headingText);
+      popupBox.appendChild(imageHeading);
+    }
+
+    // Create The Image
+    let popupImage = document.createElement("img");
+    // set image source
+    popupImage.src = img.src;
+
+    popupBox.appendChild(popupImage);
+    document.body.appendChild(popupBox);
+
+    // Create Close span
+    let closeButton = document.createElement("span");
+    closeButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+    // closeButton.innerHTML = `X`;
+    closeButton.className = "close-button";
+
+    popupBox.appendChild(closeButton);
+  });
+});
+
+// close popup
+document.addEventListener("click", (event) => {
+  if (event.target.className == "close-button") {
+    event.target.parentNode.remove();
+    document.querySelector(".popup-overlay").remove();
+  } else if (event.target.classList.contains("fa-xmark")) {
+    event.target.parentNode.parentNode.remove();
+    document.querySelector(".popup-overlay").remove();
+  }
+});
+
+// scroll to section
+const bullets = document.querySelectorAll(".nav-bullets .bullet");
+const links = document.querySelectorAll(".links a");
+
+function scrollToSection(elements) {
+  elements.forEach((element) => {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      document.querySelector(event.target.dataset.section).scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+  });
+}
+
+scrollToSection(bullets);
+scrollToSection(links);
+
+// toggle menu
+let toggleMenu = document.querySelector(".toggle-menu");
+let linksOpened = document.querySelector(".links");
+
+toggleMenu.addEventListener("click", () => {
+  linksOpened.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+  if (!toggleMenu.contains(e.target) && !linksOpened.contains(e.target)) {
+    linksOpened.classList.remove("open");
+  }
+});
