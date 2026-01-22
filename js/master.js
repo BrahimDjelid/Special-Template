@@ -1,3 +1,5 @@
+document.body.classList.add("landing-mode");
+
 // Settings box
 const settingsIcon = document.querySelector(".toggle-button .settings-button");
 const toggleButton = document.querySelector(".toggle-button");
